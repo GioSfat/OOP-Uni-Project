@@ -1,0 +1,15 @@
+#BlueJ class context
+comment0.target=Player
+comment1.params=name
+comment1.target=Player(java.lang.String)
+comment2.params=board
+comment2.target=void\ Fire(java.lang.String[][])
+comment3.params=board
+comment3.target=void\ PCFire(java.lang.String[][])
+comment4.params=
+comment4.target=void\ getStats()
+comment5.params=board\ ship\ x\ y
+comment5.target=void\ placeShip(java.lang.String[][],\ Ship,\ int,\ int)
+comment6.params=board
+comment6.target=void\ placeAllShips(java.lang.String[][])
+numComments=7

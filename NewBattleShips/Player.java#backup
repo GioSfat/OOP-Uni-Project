@@ -1,0 +1,247 @@
+import java.util.Scanner;
+public class Player{
+    public static int PCmisses=0;
+    public static int PChits=0;
+    public static int PLAYERmisses=0;
+    public static int PLAYERhits=0;
+    public static int shots=0;
+    String name;
+    public Player(String name){this.name = name;}
+    public static void Fire(String[][] board) {
+        int row,col;
+        shots++;
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Choose row for the shot");
+        row = sc.nextInt();
+        while(row>9 || row<0) {//Elegxos gia akures times 
+            System.out.println("Choose valid row for the shot(0-9)");
+            row = sc.nextInt();
+        }
+        System.out.println("Choose column for the shot");
+        col = sc.nextInt();
+        while(col>9 || col<0) {//Elegxos gia akures times 
+            System.out.println("Choose valid column for the shot(0-9)");
+            col = sc.nextInt();
+        }
+        if(board[row][col]=="S") {
+            System.out.println("-----HIT-----");
+            board[row][col]=Tiles2.HIT;
+            PLAYERhits++;
+        }else if(board[row][col]=="~") {
+            System.out.println("-----MISS-----");
+            board[row][col]=Tiles2.MISS;
+            PLAYERmisses++;
+        }else if(board[row][col]=="X") {
+            System.out.println("Already HIT.");
+        }else if(board[row][col]=="O") {
+            System.out.println("Already MISS.");
+        }
+        
+    }
+    
+    public static void getStats() {
+        //System.out.println(misses);
+        //System.out.println(hits);
+        //System.out.println(shots);
+        System.out.println("Miss ratio is: " + (int)((PLAYERmisses * 100.0f) / (shots/2.0))+"%");
+        System.out.println("Hit ratio is: " + (int)((PLAYERhits * 100.0f) / (shots/2.0))+"%");
+    }
+    public static void placeShip(String[][] board,Ship ship, int x, int y) throws NewException, 
+    OverlapTilesException, AdjacentTilesException{
+            
+            ship.placeShip(board);
+       }
+    
+    public static void placeAllShips(String[][] board) throws OverlapTilesException,NewException,AdjacentTilesException {
+Carrier ship1 = new Carrier(5,1,1,1);
+        BattleShip ship2 = new BattleShip(4,1,1,1);
+        Cruiser ship3 = new Cruiser(3,1,1,1);
+        Submarine ship4 = new Submarine(3,1,1,1);
+        Destroyer ship5 = new Destroyer(2,1,1,1);   
+        
+        int[] size = new int[5];
+        size[0]=ship1.getSize();
+        size[1]=ship2.getSize();
+        size[2]=ship3.getSize();
+        size[3]=ship4.getSize();
+        size[4]=ship5.getSize();
+        
+       
+        boolean x=true;
+    int i;
+    
+        
+        for( int z=0;z<=4;z++){
+                do{
+            try {
+                
+                if(Math.random() < 0.5) {
+                //horizontal
+                int row= (int) (Math.random()*board.length); 
+                int col = (int) (Math.random()*(board.length - size[z]));
+                if(board[row][col]=="S") {
+                    throw new OverlapTilesException("");
+                }else{
+                    for( i = 0; i<size[z] ;i++) {
+                        if(board[row][col+i] == "S") {
+                            throw new NewException("");
+                        }
+                        if(row==0 && col==0){
+                            for(i=0;i<size[z];i++){
+                                if(board[row+1][col+i]=="S"){
+                                    throw new AdjacentTilesException("");
+                                }
+                            }
+                            if(board[row][col+1]=="S"){
+                                throw new AdjacentTilesException("");
+                            }
+                        }else if (row==0 && col==board.length-1) {
+                            for(i=0;i<size[z];i++){
+                                if(board[row+1][col+i]=="S"){
+                                    throw new AdjacentTilesException("");
+                                }
+                            }
+                            if(board[row][col-1]=="S"){
+                                throw new AdjacentTilesException("");
+                            }
+                        }else if (row==board.length-1 && col==0) {
+                            for(i=0;i<size[z];i++){
+                                if(board[row-1][col+i]=="S"){
+                                    throw new AdjacentTilesException("");
+                                }
+                            }
+                            if(board[row][col+1]=="S"){
+                                throw new AdjacentTilesException("");
+                            }
+                        }else if (row==board.length-1 && col==board.length-size[z]) {
+                            for(i=0;i<size[z];i++){
+                                if(board[row-1][col+i]=="S"){
+                                    throw new AdjacentTilesException("");
+                                }
+                            }
+                            if(board[row][col-1]=="S"){
+                                throw new AdjacentTilesException("");
+                            }
+                        }else{
+                            for (i=0;i<size[z];i++) {
+                                if(board[row-1][col+i]=="S"){
+                                    throw new AdjacentTilesException("");
+                                }
+                                if(board[row+1][col+i]=="S"){
+                                    throw new AdjacentTilesException("");
+                                }
+                            }   
+                            if(board[row][col-1]=="S"){
+                                throw new AdjacentTilesException("");
+                            }
+                            if(board[row][col+1]=="S"){
+                                throw new AdjacentTilesException("");
+                                
+                            }
+                        }
+                    
+                    for( i = 0; i<size[z] ;i++) {
+                        board[row][col+i] = Tiles2.SHIP;
+                                                
+                    }
+            x=false;
+            System.out.println("test "+ size[z]);
+                }
+                }       
+                }else {
+                //vertical
+                int row= (int) (Math.random()*(board.length - size[z])); 
+                int col = (int) (Math.random()*board.length);
+                if(board[row][col]=="S") {
+                    throw new OverlapTilesException("");
+                }else {
+                    for( i = 0; i<size[z] ;i++) {
+                        if(board[row+i][col] == "S") {
+                            throw new NewException("");
+                        }
+                    }
+                    if(row==0 && col==0) {
+                        for(i=0;i<size[z];i++) {
+                            if(board[row+i][col+1]=="S") {
+                                throw new AdjacentTilesException("");
+                            }                           
+                        }
+                        if(board[row+1][col]=="S") {
+                            throw new AdjacentTilesException("");
+                        }                           
+                    }else if(row==0 && col==board[0].length-1){
+                        for (i=0;i<size[z];i++) {
+                            if(board[row+i][col-1]=="S"){
+                                throw new AdjacentTilesException("");
+                            }
+                        }
+                        if (board[row+1][col]=="S") {
+                            throw new AdjacentTilesException("");
+                        }
+                    }else if(row==(board[0].length-size[z]) && col==0){
+							if(board[row+i][col]=="S"){
+								throw new AdjacentTilesException("");
+							}
+						}
+						if (board[row-1][col]=="S") {
+							throw new AdjacentTilesException("");
+						}
+					}else if(row==(board[0].length-size[z]) && col==board[0].length-1){
+						for (i=0;i<size[z];i++) {
+							if(board[row+i][col-1]=="S"){
+								throw new AdjacentTilesException("");
+							}
+						}
+						if (board[row-1][col]=="S") {
+							throw new AdjacentTilesException("");
+						}
+					}else{
+						for (i=0;i<size[z];i++) {
+							if(board[row+i][col-1]=="S"){
+								throw new AdjacentTilesException("");
+							}
+							if(board[row+i][col+1]=="S"){
+								throw new AdjacentTilesException("");
+							}
+						}	
+						if(board[row-1][col]=="S"){
+							throw new AdjacentTilesException("");
+						}
+						if(board[row+1][col]=="S"){
+							throw new AdjacentTilesException("");
+							
+						}
+					}
+					
+					for( i = 0; i<size[z] ;i++) {
+					board[row+i][col] = Tiles2.SHIP;
+			
+					}
+							x=false;
+			System.out.println("test "+ size[z]);
+				}
+			}
+
+			}
+						catch(IndexOutOfBoundsException e){
+			    x=true;
+			    continue;
+				
+			}catch(OverlapTilesException e){
+			    x=true;
+			    continue;
+			
+			}catch(NewException e) {
+			    x=true;
+			    continue;
+				
+			}catch(AdjacentTilesException e) {
+			   x=true; 
+			   continue;
+			}
+			
+		} while(x=false);
+       }
+       
+    }
+}

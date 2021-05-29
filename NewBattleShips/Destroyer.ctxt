@@ -1,0 +1,7 @@
+#BlueJ class context
+comment0.target=Destroyer
+comment1.params=size\ x\ y\ dir
+comment1.target=Destroyer(int,\ int,\ int,\ int)
+comment2.params=
+comment2.target=void\ method()
+numComments=3

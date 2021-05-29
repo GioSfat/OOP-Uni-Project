@@ -1,0 +1,5 @@
+#BlueJ class context
+comment0.target=NewException
+comment1.params=msg
+comment1.target=NewException(java.lang.String)
+numComments=2
